@@ -1,0 +1,1 @@
+export { CustomerBody } from './ui';
