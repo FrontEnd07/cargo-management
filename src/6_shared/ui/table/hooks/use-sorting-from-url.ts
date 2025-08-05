@@ -2,13 +2,18 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
-import type { TableSortState, TableSortHandler } from '../types';
+import type {
+    TableSortState,
+    TableSortHandler,
+    PaginationState,
+    PaginationHandler
+} from '../types';
 
-export function useSortingFromUrl() {
+export function useTableFromUrl() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Получаем текущее состояние сортировки из URL (без дефолтов)
+    // Получаем текущее состояние сортировки из URL
     const currentSort = useMemo<TableSortState | null>(() => {
         const sortBy = searchParams.get('sortBy');
         const sortOrder = searchParams.get('sortOrder') as 'asc' | 'desc';
@@ -16,6 +21,17 @@ export function useSortingFromUrl() {
         if (!sortBy) return null;
 
         return { sortBy, sortOrder: sortOrder || 'asc' };
+    }, [searchParams]);
+
+    // Получаем текущее состояние пагинации из URL
+    const currentPagination = useMemo<{ page: number; limit: number } | null>(() => {
+        const page = searchParams.get('page');
+        const limit = searchParams.get('limit');
+
+        return {
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 10
+        };
     }, [searchParams]);
 
     // Обработчик изменения сортировки
@@ -33,13 +49,33 @@ export function useSortingFromUrl() {
         }
 
         // Сбрасываем страницу при смене сортировки
-        params.delete('page');
+        params.set('page', '1');
 
         router.push(`?${params.toString()}`, { scroll: false });
     }, [currentSort, searchParams, router]);
 
+    // Обработчик изменения страницы
+    const handlePageChange = useCallback<PaginationHandler>((page: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('page', page.toString());
+
+        router.push(`?${params.toString()}`, { scroll: false });
+    }, [searchParams, router]);
+
+    // Обработчик изменения лимита
+    const handleLimitChange = useCallback((limit: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('limit', limit.toString());
+        params.set('page', '1'); // Сбрасываем на первую страницу
+
+        router.push(`?${params.toString()}`, { scroll: false });
+    }, [searchParams, router]);
+
     return {
         currentSort,
+        currentPagination,
         handleSortChange,
+        handlePageChange,
+        handleLimitChange,
     };
 }

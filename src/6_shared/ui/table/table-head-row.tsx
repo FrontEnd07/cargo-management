@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useSortingFromUrl } from './hooks/use-sorting-from-url';
+import { useTableFromUrl } from './hooks/use-sorting-from-url';
 
 interface TableHeadRowProps {
     headerGroup: any;
@@ -12,7 +12,7 @@ export const TableHeadRow = ({ headerGroup }: TableHeadRowProps) => {
     const { id, headers } = headerGroup;
 
     // Используем хук прямо в компоненте
-    const { currentSort, handleSortChange } = useSortingFromUrl();
+    const { currentSort, handleSortChange } = useTableFromUrl();
 
     const getSortIcon = (columnId: string) => {
         if (!currentSort || currentSort.sortBy !== columnId) {
@@ -45,7 +45,7 @@ export const TableHeadRow = ({ headerGroup }: TableHeadRowProps) => {
                             <div
                                 className={
                                     canSort
-                                        ? 'cursor-pointer select-none flex items-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-600 p-1 rounded'
+                                        ? 'cursor-pointer select-none flex items-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-600 p-1 px-2 rounded'
                                         : 'flex items-center gap-1'
                                 }
                                 onClick={() => canSort && handleHeaderClick(header)}

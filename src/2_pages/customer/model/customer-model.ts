@@ -111,6 +111,7 @@ export const customerModel = {
                 tableData,
                 total,
                 page,
+                limit,
                 totalPages: Math.ceil(total / limit)
             };
         } catch (error) {

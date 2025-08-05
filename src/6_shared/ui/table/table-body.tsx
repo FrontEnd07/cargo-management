@@ -31,7 +31,7 @@ export function TableBody<TData>({
                 ))
             ) : (
                 <tr>
-                    <td className="px-6 py-8 text-center text-gray-500" colSpan={columns.length}>
+                    <td className="px-6 py-8 text-center text-gray-500 bg-white dark:bg-gray-800" colSpan={columns.length}>
                         No results.
                     </td>
                 </tr>

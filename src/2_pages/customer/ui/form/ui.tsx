@@ -8,8 +8,10 @@ import { trpc } from 'app/_trpcClient';
 import { toast } from '6_shared/utils';
 import { handleTRPCError } from '6_shared/lib';
 import { useModalStore } from '6_shared/store';
+import { useRouter } from 'next/navigation';
 
 export const Form = () => {
+    const router = useRouter();
     const { closeModal } = useModalStore()
 
     const {
@@ -35,6 +37,7 @@ export const Form = () => {
             toast.success(data.message)
             reset()
             closeModal()
+            router.refresh();
         },
 
         onError: (error) => {
