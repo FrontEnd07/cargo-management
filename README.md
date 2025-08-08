@@ -34,5 +34,5 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/ваш-логин/cargo-managment.git
+git clone https://github.com/FrontEnd07/cargo-managment.git
 cd cargo-managment
