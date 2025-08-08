@@ -5,14 +5,14 @@ import { useCallback, useMemo } from 'react';
 import type {
     TableSortState,
     TableSortHandler,
-    PaginationState,
     PaginationHandler
 } from '../types';
+import { useCustomerStore } from "6_shared/store"
 
 export function useTableFromUrl() {
     const router = useRouter();
     const searchParams = useSearchParams();
-
+    const { setPending } = useCustomerStore();
     // Получаем текущее состояние сортировки из URL
     const currentSort = useMemo<TableSortState | null>(() => {
         const sortBy = searchParams.get('sortBy');
@@ -51,6 +51,8 @@ export function useTableFromUrl() {
         // Сбрасываем страницу при смене сортировки
         params.set('page', '1');
 
+        setPending(true);
+
         router.push(`?${params.toString()}`, { scroll: false });
     }, [currentSort, searchParams, router]);
 
@@ -58,7 +60,7 @@ export function useTableFromUrl() {
     const handlePageChange = useCallback<PaginationHandler>((page: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('page', page.toString());
-
+        setPending(true);
         router.push(`?${params.toString()}`, { scroll: false });
     }, [searchParams, router]);
 
@@ -67,7 +69,7 @@ export function useTableFromUrl() {
         const params = new URLSearchParams(searchParams.toString());
         params.set('limit', limit.toString());
         params.set('page', '1'); // Сбрасываем на первую страницу
-
+        setPending(true);
         router.push(`?${params.toString()}`, { scroll: false });
     }, [searchParams, router]);
 

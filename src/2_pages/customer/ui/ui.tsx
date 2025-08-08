@@ -1,5 +1,4 @@
 import type { CustomerParamsPageProps } from "../type";
-import { breadcrumbs } from "../config";
 import { CustomerHeader } from "./header";
 import { CustomerBody } from "./body";
 import { customerModel } from "../model";
@@ -11,19 +10,21 @@ export const Customer = async ({ searchParams }: CustomerParamsPageProps) => {
         search = "",
         sortBy = "createAt",
         sortOrder = "desc",
-    } = searchParams;
+        date,
+    } = await searchParams;
 
     const customerData = await customerModel.getWithpagination({
         page: parseInt(page),
         limit: parseInt(limit),
         search: search || undefined,
         sortBy,
-        sortOrder: sortOrder as "asc" | "desc"
+        sortOrder: sortOrder as "asc" | "desc",
+        date: date || undefined
     });
 
     return (
         <div>
-            <CustomerHeader breadcrumbs={breadcrumbs} />
+            <CustomerHeader />
             <CustomerBody dataCustomer={customerData} />
         </div>
     );

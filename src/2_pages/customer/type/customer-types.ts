@@ -19,6 +19,7 @@ export type GetCustomerParams = {
     search?: string;
     sortBy: string;
     sortOrder?: 'asc' | 'desc';
+    date?: string;
     filters?: {
         dateFrom?: string;
         dateTo?: string;
@@ -33,6 +34,7 @@ export type CustomerParamsPageProps = {
         search?: string;
         sortBy?: string;
         sortOrder?: string;
+        date?: string;
     }
 }
 

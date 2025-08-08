@@ -1,20 +1,16 @@
 "use client"
 
-import { Breadcrumbs, Button } from "6_shared/ui";
+import { Button, Breadcrumbs } from "6_shared/ui";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Form } from '../form';
 import { useModalStore } from "6_shared/store";
 import { X } from 'lucide-react';
 
-export const CustomerHeader = ({
-    breadcrumbs
-}: {
-    breadcrumbs: any;
-}) => {
+export const CustomerHeader = () => {
     const { closeModal, openModal, isOpen } = useModalStore()
 
     return <div className="flex items-center justify-between">
-        <Breadcrumbs items={breadcrumbs} />
+        <Breadcrumbs />
         <div>
             <Dialog.Root open={isOpen} onOpenChange={(open) => {
                 if (open) openModal()

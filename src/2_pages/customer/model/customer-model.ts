@@ -9,7 +9,8 @@ export const customerModel = {
             search,
             sortBy = "createAt",
             sortOrder = "desc",
-            filters
+            filters,
+            date
         } = params;
 
         try {
@@ -31,16 +32,20 @@ export const customerModel = {
                 ]
             }
 
-            //Фильтры по дате
-            if (filters?.dateFrom || filters?.dateTo) {
-                whereConditions.date = {};
+            // Фильтр по дате
+            if (date) {
+                const filterDate = new Date(date);
+                // Начало и конец дня для точного поиска по дате
+                const startOfDay = new Date(filterDate);
+                startOfDay.setHours(0, 0, 0, 0);
 
-                if (filters.dateFrom) {
-                    whereConditions.date.gte = new Date(filters.dateFrom);
-                }
-                if (filters.dateTo) {
-                    whereConditions.date.lte = new Date(filters.dateTo);
-                }
+                const endOfDay = new Date(filterDate);
+                endOfDay.setHours(23, 59, 59, 999);
+
+                whereConditions.date = {
+                    gte: startOfDay,
+                    lte: endOfDay
+                };
             }
 
             //Фильтр по наличии кодов

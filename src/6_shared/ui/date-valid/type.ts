@@ -7,5 +7,5 @@ export type DateInputProps = {
     placeholder?: string;
     className?: string;
     defaultValue?: Date | string;
-    errors: string;
+    errors?: string;
 }

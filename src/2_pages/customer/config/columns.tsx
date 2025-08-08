@@ -4,8 +4,8 @@ import { Customer } from "@prisma/client"
 export const customerColumns: ColumnDef<Customer>[] = [
     {
         accessorKey: "id",
-        header: "ID",
-        
+        header: "№",
+        cell: ({ row }) => row.index + 1,
     },
     {
         accessorKey: "name",

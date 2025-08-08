@@ -46,6 +46,6 @@ export default async function AuthenticatedLayout({
         );
     } catch (error) {
         console.error('Ошибка верификации токена:', error);
-        redirect('/login');
+        redirect('/auth/login');
     }
 }

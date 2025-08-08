@@ -22,7 +22,8 @@ export const Pagination = ({
     const endItem = Math.min(currentPage * limit, total);
 
     return (
-        <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4">
+        <>
+
             {/* Информация о записях */}
             {showInfo && (
                 <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
@@ -72,6 +73,6 @@ export const Pagination = ({
                     </button>
                 </li>
             </ul>
-        </nav>
+        </>
     );
 };

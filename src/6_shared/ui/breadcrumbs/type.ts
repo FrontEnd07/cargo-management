@@ -1,10 +1,14 @@
 
-export type BreadcrumbItem = {
-    text: string;
-    href?: string;
+export interface BreadcrumbItem {
+    title: string;
+    url?: string;
 }
 
-export type BreadcrumbsProps = {
-    items: BreadcrumbItem[];
-    className?: string;
+export interface SidebarItem {
+    title: string;
+    url?: string;
+    icon?: React.ComponentType<{ className?: string }>;
+    items?: SidebarItem[];
+    roles?: string[];
+    isActive?: boolean;
 }

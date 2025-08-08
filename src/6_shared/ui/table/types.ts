@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // Типы для сортировки
 export interface TableSortState {
     sortBy: string;
@@ -37,4 +39,14 @@ export interface PaginationProps {
     showInfo?: boolean;
     total?: number;
     limit?: number;
+}
+
+//Таблица
+export interface TableProps {
+    tableInstance: any;
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    children?: ReactNode;
 }
