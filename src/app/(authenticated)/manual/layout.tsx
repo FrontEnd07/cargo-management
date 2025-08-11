@@ -8,7 +8,6 @@ interface WarehouceLayoutProps {
 
 export default async function WarehouceLayout({ children }: WarehouceLayoutProps) {
     try {
-
         return <div>
             <div className="flex items-center justify-between">
                 <Breadcrumbs />

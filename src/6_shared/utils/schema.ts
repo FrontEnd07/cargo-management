@@ -11,7 +11,8 @@ const VALIDATION_LIMITS = {
     ADDRESS: { MIN: 3 },
     TAG: { MIN: 2, MAX: 10 },
     PASS: { MIN: 6 },
-    TAGS: { MIN: 1, MAX: 5 }
+    TAGS: { MIN: 1, MAX: 5 },
+    SYMBOL: { MIN: 1 }
 } as const;
 
 // Error messages
@@ -24,6 +25,7 @@ const ERROR_MESSAGES = {
     TAG_MIN: `Тег должен содержать минимум ${VALIDATION_LIMITS.TAG.MIN} символа`,
     TAG_MAX: `Тег не должен превышать ${VALIDATION_LIMITS.TAG.MAX} символов`,
     TAGS_MIN: "Пожалуйста, добавьте хотя бы один тег",
+    SYMBOL_MIN: "Пожалуйста, добавьте хотя бы один символ",
     TAGS_MAX: `Вы можете добавить не более ${VALIDATION_LIMITS.TAGS.MAX} тегов`
 } as const;
 
@@ -67,6 +69,11 @@ const addressSchema = z
     .min(VALIDATION_LIMITS.ADDRESS.MIN, ERROR_MESSAGES.ADDRESS)
     .trim();
 
+const symbolSchema = z
+    .string()
+    .min(VALIDATION_LIMITS.SYMBOL.MIN, ERROR_MESSAGES.SYMBOL_MIN)
+    .trim();
+
 const dateSchema = z
     .date({
         message: ERROR_MESSAGES.DATE
@@ -81,6 +88,7 @@ export {
     tagSchema,
     phoneSchema,
     nameSchema,
+    symbolSchema,
     addressSchema,
     dateSchema,
     codesSchema,

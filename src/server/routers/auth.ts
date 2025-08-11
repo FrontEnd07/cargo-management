@@ -2,7 +2,7 @@ import {
     registrSchema,
     loginSchema
 } from "4_features/auth";
-import { router, publicProcedure } from "../trpc"
+import { router, publicProcedure, protectedProcedure } from "../trpc"
 import { TRPCError } from "@trpc/server";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
@@ -178,5 +178,11 @@ export const authRouter = router({
                     message: "Не удалось выйти из системы"
                 })
             }
-        })
+        }),
+        // getAllUser: protectedProcedure
+        // .input(
+        //     z.object({
+                
+        //     })
+        // )
 })

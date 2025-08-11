@@ -1,0 +1,1 @@
+export { TableCurrency } from "./ui";

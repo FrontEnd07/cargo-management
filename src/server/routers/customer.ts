@@ -1,4 +1,3 @@
-import { z } from 'zod'
 import { protectedProcedure, router } from "server/trpc";
 import { addCustomerSchema } from "2_pages/customer"
 import { TRPCError } from "@trpc/server";

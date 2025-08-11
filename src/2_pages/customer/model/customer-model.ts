@@ -85,8 +85,6 @@ export const customerModel = {
                 orderBy.createAt = 'desc';
             }
 
-            console.log('Final orderBy:', orderBy);
-
             const [customers, total] = await Promise.all([
                 db.customer.findMany({
                     skip: (page - 1) * limit,

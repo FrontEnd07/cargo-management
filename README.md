@@ -19,6 +19,7 @@
 | Уведомления      | react-toastify                    |
 | Маршрутизация    | tRPC                              |
 | ORM              | Prisma                            |
+| STATE MANAGEMENT | Zustand                           |
 | Аутентификация   | jose, bcrypt                      |
 
 ### 🛠️ Dev инструменты

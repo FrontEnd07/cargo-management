@@ -3,13 +3,13 @@ import { redirect } from "next/navigation";
 import { Breadcrumbs } from "6_shared/ui";
 
 interface WarehouceLayoutProps {
-    children: ReactNode
+    children: ReactNode;
 }
 
 export default async function WarehouceLayout({ children }: WarehouceLayoutProps) {
     try {
 
-        return <div>
+        return <div className="relative">
             <div className="flex items-center justify-between">
                 <Breadcrumbs />
             </div>

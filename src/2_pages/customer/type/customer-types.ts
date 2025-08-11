@@ -28,14 +28,14 @@ export type GetCustomerParams = {
 }
 
 export type CustomerParamsPageProps = {
-    searchParams: {
+    searchParams: Promise<{
         page?: string;
         limit?: string;
         search?: string;
         sortBy?: string;
         sortOrder?: string;
         date?: string;
-    }
+    }>
 }
 
 

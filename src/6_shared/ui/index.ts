@@ -10,3 +10,4 @@ export * from "./date";
 export * from "./select";
 export * from "./table";
 export * from "./tag-input";
+export * from "./dialog-modal";

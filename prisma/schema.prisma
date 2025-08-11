@@ -63,3 +63,11 @@ model Codes {
   updateAt   DateTime @updatedAt
   createAt   DateTime @default(now())
 }
+
+model Currency {
+  id       String   @id @default(cuid())
+  name     String
+  symbol   String
+  updateAt DateTime @updatedAt
+  createAt DateTime @default(now())
+}

@@ -1,40 +1,132 @@
 "use client"
 
-import { Button, Breadcrumbs } from "6_shared/ui";
-import * as Dialog from "@radix-ui/react-dialog";
-import { Form } from '../form';
-import { useModalStore } from "6_shared/store";
-import { X } from 'lucide-react';
+import {
+    Breadcrumbs,
+    DialogModal,
+    Input,
+    Mask,
+    DateInput,
+    Button,
+    TagInput
+} from "6_shared/ui";
+import { Plus } from 'lucide-react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+    addCustomerTypesSchema,
+    addCustomerSchema
+} from "2_pages/customer";
+import { trpc } from 'app/_trpcClient';
+import { toast } from '6_shared/utils';
+import { handleTRPCError } from '6_shared/lib';
+import { useModalStore } from '6_shared/store';
+import { useRouter } from 'next/navigation';
 
 export const CustomerHeader = () => {
-    const { closeModal, openModal, isOpen } = useModalStore()
+    const router = useRouter();
+    const { closeModal } = useModalStore()
+
+    const {
+        control,
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm({
+        mode: 'onSubmit',
+        resolver: zodResolver(addCustomerSchema),
+        defaultValues: {
+            phone: "",
+            date: new Date(),
+        }
+    })
+
+    const {
+        mutate: customerCreate,
+        isPending: isPendingCreateCustomer
+    } = trpc.Customer.AddCustomer.useMutation({
+        onSuccess: (data) => {
+            toast.success(data.message)
+            reset()
+            closeModal()
+            router.refresh();
+        },
+
+        onError: (error) => {
+            handleTRPCError(error)
+        }
+    })
+
+    const handlerForm = (data: addCustomerTypesSchema) => customerCreate(data)
 
     return <div className="flex items-center justify-between">
         <Breadcrumbs />
         <div>
-            <Dialog.Root open={isOpen} onOpenChange={(open) => {
-                if (open) openModal()
-                else closeModal()
-            }}>
-                <Dialog.Trigger asChild>
-                    <Button>Добавить клиента</Button>
-                </Dialog.Trigger>
-                <Dialog.Portal>
-                    <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-                    <Dialog.Content className="fixed shadow-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg dark:bg-slate-800 dark:border-gray-700 border-gray-950/5 border">
-                        <Dialog.Title className="border-b border-gray-700 border-gray-950/5 dark:border-white/10 p-4 py-3 w-full">Добавить клиента</Dialog.Title>
-                        <div>
-                            <Form />
-                        </div>
-                        <Dialog.Close asChild
-                            className="cursor-pointer text-gray-300 hover:text-white  absolute z-10 -top-9 -right-10 flex items-center justify-center rounded-full transition-colors duration-200"
-                            onClick={closeModal}
-                        >
-                            <X />
-                        </Dialog.Close>
-                    </Dialog.Content>
-                </Dialog.Portal>
-            </Dialog.Root>
+            <DialogModal title="Добавить клиента" icon={Plus}>
+                <div className='p-4 grid grid-cols-2 gap-5 max-w-md'>
+                    <div>
+                        <Input
+                            label="Имя*"
+                            type="text"
+                            id="name"
+                            errors={errors.name?.message}
+                            placeholder="Имя клиента*"
+                            {...register('name')}
+                        />
+                    </div>
+                    <div>
+                        <Controller
+                            control={control}
+                            name="phone"
+                            render={({ field, fieldState }) => (
+                                <Mask
+                                    {...field}
+                                    mask={{
+                                        mask: '+{992} (00) 000-00-00',
+                                        lazy: false
+                                    }}
+                                    label="Телефон*"
+                                    errors={fieldState.error?.message}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div>
+                        <DateInput
+                            name='date'
+                            label='Дата регистрации'
+                            control={control}
+                            className='text-left'
+                            errors={errors.date?.message as string}
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            label="Адрес*"
+                            type="text"
+                            id="address"
+                            errors={errors.address?.message}
+                            placeholder="Адрес клиентов"
+                            {...register("address")}
+                        />
+                    </div>
+                    <div className='col-span-full'>
+                        <TagInput
+                            name="codes"
+                            control={control}
+                            label="Коды клиента*"
+                            errors={errors.codes?.message as string}
+                            placeholder="Вводите код и нажмите Enter*"
+                            maxTags={10}
+                        />
+                    </div>
+                </div>
+                <div className='border-t border-gray-950/5 dark:border-gray-700 p-4 py-3 text-right'>
+                    <Button onClick={handleSubmit(handlerForm)} isLoading={isPendingCreateCustomer}>
+                        Добавить
+                    </Button>
+                </div>
+            </DialogModal>
         </div>
     </div>;
 };
