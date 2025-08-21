@@ -9,7 +9,7 @@ import { trpc } from 'app/_trpcClient';
 import { toast } from 'react-toastify';
 import { handleTRPCError } from '6_shared/lib';
 import { useRouter } from 'next/navigation';
-
+import NProgress from 'nprogress';
 
 export const LoginForm = () => {
     const form = useForm<authLoginTypeSchema>({
@@ -26,6 +26,7 @@ export const LoginForm = () => {
         onSuccess: (data) => {
             toast.success(data.message)
             reset()
+            NProgress.start()
             router.push('/dashboard')
         },
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
     phoneSchema,
     passSchema
-} from "6_shared/utils"
+} from "6_shared/schema"
 
 // Main schema
 export const loginSchema = z.object({

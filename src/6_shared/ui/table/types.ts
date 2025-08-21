@@ -50,3 +50,21 @@ export interface TableProps {
     totalPages: number;
     children?: ReactNode;
 }
+
+export interface GlobalTypeTable {
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc"
+}
+
+export interface GlobalTypeTableProps {
+    searchParams: Promise<{
+        page?: string;
+        limit?: string;
+        search?: string;
+        sortBy?: string;
+        sortOrder?: "asc" | "desc"
+    }>
+}

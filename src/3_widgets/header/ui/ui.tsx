@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { trpc } from 'app/_trpcClient';
 import { toast } from 'react-toastify';
 import { handleTRPCError } from '6_shared/lib';
-
+import NProgress from 'nprogress';
 
 export const Header = ({ payload }: DashboardHeaderProps) => {
     const router = useRouter()
@@ -14,6 +14,7 @@ export const Header = ({ payload }: DashboardHeaderProps) => {
     const { mutate: LogoutUser } = trpc.Auth.Logout.useMutation({
         onSuccess: () => {
             toast.success("Успешный выход из системы.")
+            NProgress.start()
             router.push('/auth/login')
         },
 

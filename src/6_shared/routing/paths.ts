@@ -93,6 +93,10 @@ export const paths: sidebarData = {
                         {
                             title: "Валюта",
                             url: "/manual/currency"
+                        },
+                        {
+                            title: "Направление",
+                            url: "/manual/product-routes"
                         }
                     ]
                 }

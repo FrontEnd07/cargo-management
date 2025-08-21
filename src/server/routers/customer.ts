@@ -1,7 +1,7 @@
-import { protectedProcedure, router } from "server/trpc";
+import { protectedProcedure, router, publicProcedure } from "server/trpc";
 import { addCustomerSchema } from "2_pages/customer"
 import { TRPCError } from "@trpc/server";
-
+import { z } from "zod";
 
 export const customerRouter = router({
     AddCustomer: protectedProcedure
@@ -50,5 +50,62 @@ export const customerRouter = router({
                     message: "Не удалось зарегистрировать данные",
                 });
             }
+        }),
+    getCustomerCodes: publicProcedure
+        .input(z.object({
+            search: z.string().optional().default("")
+        }))
+        .query(async ({ ctx, input }) => {
+            const customers = await ctx.db.customer.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: input.search,
+                            },
+                        },
+                        {
+                            codes: {
+                                some: {
+                                    value: {
+                                        contains: input.search,
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                },
+                include: {
+                    codes: {
+                        select: {
+                            id: true,
+                            value: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    name: "asc",
+                },
+                take: 5,
+            });
+
+            // Создаем уникальный список кодов с информацией о клиенте
+            const uniqueCodes = new Map();
+
+            customers.forEach(customer => {
+                customer.codes.forEach(code => {
+                    if (!uniqueCodes.has(code.value)) {
+                        uniqueCodes.set(code.value, {
+                            id: code.id,
+                            code: code.value,
+                            customerId: customer.id,
+                            customerPhone: customer.phone,
+                            customerName: customer.name,
+                        });
+                    }
+                });
+            });
+
+            return Array.from(uniqueCodes.values());
         }),
 })

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { nameSchema, phoneSchema, dateSchema, addressSchema, codesSchema } from '6_shared/utils';
+import { nameSchema, phoneSchema, dateSchema, addressSchema, codesSchema } from '6_shared/schema';
 
 // Main schema
 export const addCustomerSchema = z.object({

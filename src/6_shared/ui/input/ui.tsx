@@ -3,12 +3,15 @@ import React, { forwardRef } from 'react';
 import { InputProps } from './type';
 import { X } from "lucide-react";
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, value, label, id, className, onClear, placeholder, ...props }, ref) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, value, label, id, className, onClear, showError, placeholder, ...props }, ref) => {
     return (
         <div>
-            <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
-                {label}
-            </label>
+            {label &&
+                <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
+                    {label}
+                </label>
+            }
+
             <div className='relative'>
                 <input
                     id={id}
@@ -16,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, v
                     name={id}
                     type={type}
                     ref={ref}
-                    autoComplete={id}
+                    autoComplete="off"
                     className={`${clsx(className)} appearance-none relative block w-full px-3 py-2 border 
                 ${errors ? 'border-red-300 dark:border-red-500' : 'border-gray-300'}
                 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none 
@@ -35,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, v
                     </button>
                 )}
             </div>
-            {errors && (
+            {errors && showError && (
                 <span className="mt-1 text-sm text-red-600 dark:text-red-400">{errors}</span>
             )}
         </div>

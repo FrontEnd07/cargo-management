@@ -1,7 +1,7 @@
 "use client";
 
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
-import { Table } from '6_shared/ui/table';
+import { TableDynamic } from '6_shared/ui/table';
 import { Filter } from "./filter";
 import { useEffect } from "react";
 import { useCustomerStore } from "6_shared/store"
@@ -39,7 +39,7 @@ export const CustomerTable = ({ columns, data }: CustomerTableProps) => {
             </div>
         )}
 
-        <Table
+        <TableDynamic
             page={data.page}
             tableInstance={table}
             limit={data.limit}
@@ -47,6 +47,6 @@ export const CustomerTable = ({ columns, data }: CustomerTableProps) => {
             totalPages={data.totalPages}
         >
             <Filter />
-        </Table>
+        </TableDynamic>
     </div>;
 };

@@ -1,3 +1,9 @@
+import { NavTabs } from "./nav-tabs"
 export const ReceiveProducts = () => {
-    return <div className="my-8 relative">receive-products</div>
+
+    return (
+        <div className="max-w-7xl mx-auto mt-10">
+            <NavTabs />
+        </div>
+    );
 }

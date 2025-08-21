@@ -2,7 +2,7 @@ import {
     registrSchema,
     loginSchema
 } from "4_features/auth";
-import { router, publicProcedure, protectedProcedure } from "../trpc"
+import { router, publicProcedure } from "../trpc"
 import { TRPCError } from "@trpc/server";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
@@ -15,7 +15,6 @@ export const authRouter = router({
     Register: publicProcedure
         .input(registrSchema)
         .mutation(async ({ input, ctx }) => {
-            // cek apakah ada email sama
 
             const { db } = ctx;
 
@@ -179,10 +178,10 @@ export const authRouter = router({
                 })
             }
         }),
-        // getAllUser: protectedProcedure
-        // .input(
-        //     z.object({
-                
-        //     })
-        // )
+    // getAllUser: protectedProcedure
+    // .input(
+    //     z.object({
+
+    //     })
+    // )
 })

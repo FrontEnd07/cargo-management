@@ -22,7 +22,7 @@ export const TagInput = <TFieldValues extends FieldValues>({
             render={({ field: { value, onChange } }) => (
                 <TagsInput
                     classNames={{
-                        input: 'w-full',
+                        input: '',
                         tag: `${styles.tag} !bg-green-100 !text-green-800 !px-2 !py-0.5 !rounded-md !text-sm`
                     }}
                     value={Array.isArray(value) ? value : []}

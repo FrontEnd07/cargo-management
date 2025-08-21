@@ -1,2 +1,2 @@
-export { Table } from './table';
+export { TableDynamic } from './table';
 export * from './types'

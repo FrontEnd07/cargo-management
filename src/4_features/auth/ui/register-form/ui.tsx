@@ -9,6 +9,7 @@ import { Header, Footer } from "../index";
 import { trpc } from 'app/_trpcClient';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import NProgress from "nprogress";
 
 export const RegisterForm = () => {
     const router = useRouter();
@@ -26,6 +27,7 @@ export const RegisterForm = () => {
         onSuccess: (data) => {
             toast.success(data.message)
             reset();
+            NProgress.start();
             router.push('/auth/login')
         },
 

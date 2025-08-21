@@ -6,7 +6,7 @@ import { LimitSelector } from "./limit-selector";
 import { Pagination } from "./pagination";
 import type { TableProps } from './types';
 
-export const Table = ({ tableInstance, page, limit, total, totalPages, children }: TableProps) => {
+export const TableDynamic = ({ tableInstance, page, limit, total, totalPages, children }: TableProps) => {
     const headerGroups = tableInstance.getHeaderGroups();
     const rows = tableInstance.getRowModel().rows;
     const { handlePageChange, handleLimitChange } = useTableFromUrl();

@@ -21,6 +21,7 @@ import { toast } from '6_shared/utils';
 import { handleTRPCError } from '6_shared/lib';
 import { useModalStore } from '6_shared/store';
 import { useRouter } from 'next/navigation';
+import NProgress from "nprogress";
 
 export const CustomerHeader = () => {
     const router = useRouter();
@@ -37,6 +38,9 @@ export const CustomerHeader = () => {
         resolver: zodResolver(addCustomerSchema),
         defaultValues: {
             phone: "",
+            name: "",
+            address: "",
+            codes: [],
             date: new Date(),
         }
     })
@@ -49,6 +53,7 @@ export const CustomerHeader = () => {
             toast.success(data.message)
             reset()
             closeModal()
+            NProgress.start();
             router.refresh();
         },
 

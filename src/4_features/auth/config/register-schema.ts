@@ -3,7 +3,7 @@ import {
     phoneSchema,
     nameSchema,
     passSchema
-} from "6_shared/utils"
+} from "6_shared/schema"
 
 //Main schema
 export const registrSchema = z.object({
