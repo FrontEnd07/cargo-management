@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ValidationErrors } from "5_entities/receive-products";
+import { GeneralInfo, GeneralInfoErrors } from './index'; // путь к типам
 
 export const itemSchema = z.object({
     name: z.string().min(1, "Название обязательно"),
@@ -20,6 +21,15 @@ export const itemSchema = z.object({
     }),
     customerCode: z.string().min(1, "Код клиента обязателен"),
     customerName: z.string().min(1, "Имя клиента обязательно"),
+    productRoutes: z.string().min(1, "Направления обязательно"),
+});
+
+// Схема валидации для общей информации
+export const generalInfoSchema = z.object({
+    employeeId: z.string().min(1, "Выберите сотрудника"),
+    warehouseId: z.string().min(1, "Выберите склад"),
+    date: z.string().min(1, "Укажите дату получения"),
+    customerId: z.string().optional(), // необязательное поле
 });
 
 export const validateItem = (item: any): ValidationErrors => {
@@ -33,12 +43,12 @@ export const validateItem = (item: any): ValidationErrors => {
             kgPerUnit: item.kgPerUnit,
             customerCode: item.customerCode,
             customerName: item.customerName,
+            productRoutes: item.productRoutes,
         };
 
         itemSchema.parse(itemToValidate);
         return {};
     } catch (error) {
-
         if (error instanceof z.ZodError) {
             const errors: ValidationErrors = {};
 
@@ -50,6 +60,28 @@ export const validateItem = (item: any): ValidationErrors => {
                     }
                 });
             }
+
+            return errors;
+        }
+        return {};
+    }
+};
+
+// Функция валидации общей информации
+export const validateGeneralInfo = (generalInfo: GeneralInfo): GeneralInfoErrors => {
+    try {
+        generalInfoSchema.parse(generalInfo);
+        return {};
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            const errors: GeneralInfoErrors = {};
+
+            error.issues.forEach(issue => {
+                if (issue.path && issue.path.length > 0) {
+                    const fieldName = String(issue.path[0]) as keyof GeneralInfoErrors;
+                    errors[fieldName] = issue.message;
+                }
+            });
 
             return errors;
         }

@@ -8,7 +8,7 @@ export const currencyRouter = router({
         .input(manualSchema)
         .mutation(async ({ input, ctx }) => {
             const { db } = ctx
-            
+
             const currencyIsExist = await db.currency.findFirst({
                 where: {
                     name: input.nameManual,
@@ -40,6 +40,7 @@ export const currencyRouter = router({
                 })
             }
         }),
+
     getCurrency: protectedProcedure
         .input(z.object({
             search: z.string().optional()

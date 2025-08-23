@@ -7,11 +7,9 @@ import { manualSchema, ManualFormSchema } from "~/5_entities/manual";
 import { trpc } from "app/_trpcClient";
 import { handleTRPCError } from "6_shared/lib";
 import { toast } from "6_shared/utils";
-import { useRouter } from "next/navigation";
-import NProgress from "nprogress";
 
 export const CreateProductRoutes = () => {
-    const router = useRouter();
+    const utils = trpc.useContext();
 
     const {
         register,
@@ -27,12 +25,12 @@ export const CreateProductRoutes = () => {
         }
     })
 
-    const { mutate: createProductRouter, isPending } = trpc.Currency.AddCurrency.useMutation({
+    const { mutate: createProductRouter, isPending } = trpc.ProductRoutes.createProductRoutes.useMutation({
         onSuccess: (data) => {
             toast.success(data.message)
             reset()
-            NProgress.start()
-            router.refresh()
+            // NProgress.start()
+            utils.ProductRoutes.getProductRoutes.invalidate();
         },
         onError: (error) => {
             handleTRPCError(error)

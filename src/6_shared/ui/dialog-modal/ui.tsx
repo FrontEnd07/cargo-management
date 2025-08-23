@@ -4,22 +4,24 @@ import { ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModalStore } from "6_shared/store";
 import { X, LucideIcon, Icon } from "lucide-react";
+import clsx from "clsx";
 
 interface DialogModalProps {
     children: ReactNode;
     title: string;
     icon?: LucideIcon
+    className?: string;
 }
 
-export const DialogModal = ({ children, title, icon: IconComponent }: DialogModalProps) => {
+export const DialogModal = ({ children, title, className, icon: IconComponent }: DialogModalProps) => {
     const { closeModal, openModal, isOpen } = useModalStore()
 
     return <Dialog.Root open={isOpen} onOpenChange={(open) => {
         if (open) openModal()
         else closeModal()
     }}>
-        <Dialog.Trigger>
-            <div className="flex px-4 py-2 text-sm text-sm items-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white cursor-pointer duration-200 shadow-md font-medium rounded-md outline-none">
+        <Dialog.Trigger className={`${clsx('px-4 py-2 text-sm text-sm bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white cursor-pointer duration-200 shadow-md font-medium rounded-md outline-none w-full')}`}>
+            <div className="flex items-center justify-center">
                 {IconComponent && (
                     <span className="mr-2">
                         <IconComponent className="w-4 h-4" />

@@ -43,5 +43,19 @@ export const useItemRowHandlers = (
         [index, item.customerName, onChange]
     );
 
-    return { handleInput, handleSelectChange, handleCode };
+    const handleProductRoutes = useCallback(
+        (value: any) => {
+
+            const routes = typeof value === "object" && value?.value
+                ? value.value
+                : typeof value === "string"
+                    ? value
+                    : "";
+
+            onChange(index, "productRoutes", routes);
+        },
+        [index, item.productRoutes, onChange]
+    );
+
+    return { handleInput, handleSelectChange, handleCode, handleProductRoutes };
 };

@@ -22,6 +22,46 @@ export const useCurrencyLoader = () => {
     }
 }
 
+export const useEmployee = () => {
+    const utils = trpc.useUtils();
+
+    return async (inputValue: string): Promise<SelectOption[]> => {
+        try {
+            const data = await utils.User.getUserAll.fetch({
+                search: inputValue,
+            })
+
+            return data?.map((el: any) => ({
+                label: el.name,
+                value: el.id
+            })) || []
+        } catch (error) {
+            console.error('Error loading currencies:', error)
+            return [];
+        }
+    }
+}
+
+export const useWarehouses = () => {
+    const utils = trpc.useUtils();
+
+    return async (inputValue: string): Promise<SelectOption[]> => {
+        try {
+            const data = await utils.Warehouse.getWarehouse.fetch({
+                search: inputValue,
+            })
+
+            return data?.map((el: any) => ({
+                label: el.name,
+                value: el.id
+            })) || []
+        } catch (error) {
+            console.error('Error loading currencies:', error)
+            return [];
+        }
+    }
+}
+
 export const warehouse = {
     getAll: async (params: GlobalTypeTable) => {
         const {

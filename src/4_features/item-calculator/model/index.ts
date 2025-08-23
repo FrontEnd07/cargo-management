@@ -21,6 +21,26 @@ export const useCustomerCodeLoader = () => {
     };
 };
 
+export const useProductRoutesLoader = () => {
+    const utils = trpc.useUtils();
+
+    return async (inputValue: string): Promise<SelectOption[]> => {
+        try {
+            const data = await utils.ProductRoutes.getProductRoutesAll.fetch({
+                search: inputValue,
+            });
+
+            return data?.map((el: any) => ({
+                label: el.name,
+                value: el.name,
+            })) || [];
+        } catch (error) {
+            console.error("Error loading customer codes", error);
+            return [];
+        }
+    };
+};
+
 export const useCustomerNameLoader = () => {
     const utils = trpc.useUtils();
 
@@ -31,7 +51,7 @@ export const useCustomerNameLoader = () => {
             const data = await utils.Customer.getCustomerCodes.fetch({
                 search: customerCode,
             });
-            
+
             return data?.map((el: any) => ({
                 label: el.customerName,
                 value: el.customerName,

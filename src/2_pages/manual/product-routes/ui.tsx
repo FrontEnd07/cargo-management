@@ -1,5 +1,5 @@
 import { GlobalTypeTableProps, ManualPageLayout } from "6_shared/ui"
-import { CreateProductRoutes } from "4_features/manual"
+import { CreateProductRoutes, ProductRoutesTable } from "4_features/manual"
 import { trpc } from "app/_trpcClient";
 
 export async function ProductRoutes({ searchParams }: GlobalTypeTableProps) {
@@ -22,5 +22,5 @@ export async function ProductRoutes({ searchParams }: GlobalTypeTableProps) {
     return <ManualPageLayout
         title='Направление | Добавить направление'
         addComponent={<CreateProductRoutes />}
-        tableComponent={undefined} />
+        tableComponent={<ProductRoutesTable />} />
 }

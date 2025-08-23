@@ -1,0 +1,1 @@
+export { GeneralInfoBlock } from "./ui";

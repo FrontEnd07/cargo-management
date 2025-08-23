@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import { InputProps } from './type';
 import { X } from "lucide-react";
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, value, label, id, className, onClear, showError, placeholder, ...props }, ref) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ errors, type, value, label, id, className, onClear, showError = true, placeholder, ...props }, ref) => {
     return (
         <div>
             {label &&

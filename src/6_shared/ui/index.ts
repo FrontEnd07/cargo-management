@@ -13,3 +13,4 @@ export * from "./dialog-modal";
 export * from "./select-async";
 export * from "./table-static";
 export * from "./manual-page";
+export * from "./table-client-render";

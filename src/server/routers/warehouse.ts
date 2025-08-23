@@ -1,6 +1,7 @@
 import { protectedProcedure, router } from "server/trpc";
 import { warehouseSchema } from "2_pages/warehouse";
 import { TRPCError } from "@trpc/server";
+import z from "zod";
 
 export const warehouseRouter = router({
     AddWarehouse: protectedProcedure
@@ -39,5 +40,22 @@ export const warehouseRouter = router({
                     message: "Не удалось добавить данные"
                 })
             }
+        }),
+
+    getWarehouse: protectedProcedure
+        .input(z.object({
+            search: z.string()
+        })).query(async ({ ctx, input }) => {
+            const data = await ctx.db.warehouse.findMany({
+                where: input.search ? {
+                    name: {
+                        contains: input.search,
+                    }
+                } : undefined,
+                take: 5,
+                orderBy: { createdAt: "desc" }
+            })
+
+            return data.map(({ id, name }) => ({ id, name }));
         })
 })

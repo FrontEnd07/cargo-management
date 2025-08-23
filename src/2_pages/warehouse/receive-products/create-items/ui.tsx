@@ -5,7 +5,7 @@ import { ItemTable } from '4_features/item-calculator';
 import { StatisticsPanel } from '4_features/item-calculator';
 import { ControlButtons } from '4_features/item-calculator';
 import { useItemCalculator } from '4_features/item-calculator';
-
+import { GeneralInfoBlock } from "./general-info-block.tsx";
 
 export const CreateItems = () => {
     const {
@@ -13,11 +13,14 @@ export const CreateItems = () => {
         items,
         validationErrors,
         totalStats,
+        generalInfo,
+        generalInfoErrors,
         handleItemChange,
         handleAddItem,
         handleRemoveItem,
         handleClearAll,
-        handleSubmit
+        handleSubmit,
+        handleGeneralInfoChange
     } = useItemCalculator();
 
     if (!isClient) {
@@ -39,9 +42,14 @@ export const CreateItems = () => {
     }
 
     return (
-        <div className="max-w-7xl">
-
+        <div className="max-w-7xl mt-4">
             <div className="space-y-6">
+                <GeneralInfoBlock
+                    generalInfo={generalInfo}
+                    errors={generalInfoErrors}
+                    onChange={handleGeneralInfoChange}
+                />
+
                 <ItemTable
                     items={items}
                     validationErrors={validationErrors}
@@ -62,9 +70,12 @@ export const CreateItems = () => {
                 <div className="bg-yellow-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-yellow-900 mb-2">Как использовать:</h3>
                     <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
+                        <li>Выберите сотрудника и склад в верхней части формы</li>
+                        <li>Укажите дату получения товара</li>
                         <li>Введите название товара</li>
                         <li>Укажите размеры в сантиметрах (длина, ширина, высота)</li>
                         <li>Введите количество единиц и вес одной единицы в кг</li>
+                        <li>Выберите код клиента, имя клиента и направление</li>
                         <li>Объем, общий вес и соотношение рассчитаются автоматически</li>
                         <li>Используйте кнопки для добавления/удаления строк</li>
                         <li>Поля будут подсвечены зеленым при корректном вводе и красным при ошибках</li>

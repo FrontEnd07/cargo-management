@@ -11,6 +11,7 @@ export interface Item {
     ratio: string;
     customerCode: string;
     customerName: string;
+    productRoutes: string;
 }
 
 export interface ValidationErrors {

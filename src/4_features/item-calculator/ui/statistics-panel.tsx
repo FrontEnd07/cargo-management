@@ -1,12 +1,11 @@
-
-import React from 'react';
+import React, { memo } from 'react';
 import { TotalStats } from '5_entities/receive-products';
 
 interface StatisticsPanelProps {
     stats: TotalStats;
 }
 
-export const StatisticsPanel: React.FC<StatisticsPanelProps> = ({ stats }) => {
+export const StatisticsPanel = memo<StatisticsPanelProps>(({ stats }) => {
     return (
         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-lg">
             <h3 className="font-semibold text-gray-900 mb-2 dark:text-gray-300">Общая статистика:</h3>
@@ -26,4 +25,13 @@ export const StatisticsPanel: React.FC<StatisticsPanelProps> = ({ stats }) => {
             </div>
         </div>
     );
-};
+}, (prevProps, nextProps) => {
+    // Сравниваем только значения stats
+    return (
+        prevProps.stats.totalVolume === nextProps.stats.totalVolume &&
+        prevProps.stats.totalWeight === nextProps.stats.totalWeight &&
+        prevProps.stats.avgRatio === nextProps.stats.avgRatio
+    );
+});
+
+StatisticsPanel.displayName = 'StatisticsPanel';

@@ -49,6 +49,7 @@ export const createNewItem = (id: string): Item => ({
     totalVolume: '',
     totalWeight: '',
     ratio: '',
-    customerCode: '',  // Новое поле
-    customerName: ''   // Новое поле
+    customerCode: '',
+    customerName: '',
+    productRoutes: ''
 });

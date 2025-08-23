@@ -74,7 +74,7 @@ const TableCell = forwardRef<
     <td
         ref={ref}
         className={clsx(
-            "p-1 border-r dark:border-gray-700 border-gray-200",
+            "px-6 py-4 dark:border-gray-700 border-gray-200",
             className
         )}
         {...props}

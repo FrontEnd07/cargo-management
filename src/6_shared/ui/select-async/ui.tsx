@@ -4,7 +4,8 @@ import React from "react"
 import AsyncSelect from "react-select/async"
 import type { AsyncSelectCurrencyProps, SelectOption } from "./types"
 import type { MultiValue, SingleValue } from "react-select"
-import { Icon } from '6_shared/ui'
+import { Loader2 } from 'lucide-react';
+import { useDebouncedCallback } from "use-debounce";
 
 export const SelectAsync = ({
     loadOptions,
@@ -18,6 +19,11 @@ export const SelectAsync = ({
     isDisabled = false,
     showError
 }: AsyncSelectCurrencyProps) => {
+    const debouncedLoad = useDebouncedCallback(
+        (inputValue: string) => loadOptions(inputValue),
+        1000,
+        { leading: true }
+    );
 
     const handleChange = (
         newValue: MultiValue<SelectOption> | SingleValue<SelectOption>,
@@ -45,7 +51,7 @@ export const SelectAsync = ({
         if (state.isFocused) {
             return state.isSelected
                 ? 'dark:!bg-slate-300/30'
-                : 'bg-gray-50 dark:!bg-slate-300/10'
+                : 'bg-gray-50 dark:!bg-slate-300/10 !cursor-pointer'
         }
         return 'text-gray-900 dark:text-gray-300'
     }
@@ -90,8 +96,11 @@ export const SelectAsync = ({
             hover:!text-gray-700 
             dark:!text-gray-400 
             dark:hover:!text-gray-200 
-            cursor-pointer
+            !cursor-pointer
         `,
+        indicatorsContainer: () => `
+            !p-0
+        `
     }
 
     return (
@@ -116,24 +125,22 @@ export const SelectAsync = ({
                     placeholder={placeholder}
 
                     // Обработчики
-                    loadOptions={loadOptions}
+                    loadOptions={debouncedLoad}
                     onChange={handleChange}
 
                     // Кастомизация
                     classNames={selectClassNames}
                     components={{
                         IndicatorSeparator: () => null,
+                        LoadingIndicator: () => null,
                     }}
 
                     // Сообщения
-                    noOptionsMessage={() => "Нет опции..."}
+                    noOptionsMessage={() => "Нет данных."}
                     loadingMessage={() => (
-                        <div className="flex justify-center items-center">
-                            <Icon
-                                className="animate-spin ml-1 mr-2 h-5 w-5 text-white ease-in-out"
-                                name="common/spinner"
-                            />
-                            Загрузка...
+                        <div className="flex flex-col items-center justify-center">
+                            <Loader2 className="w-5 h-5 animate-spin text-blue-500 mb-2" />
+                            <span className="text-gray-500">Загрузка...</span>
                         </div>
                     )}
                 />
