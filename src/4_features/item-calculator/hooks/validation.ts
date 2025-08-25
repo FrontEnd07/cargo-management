@@ -22,6 +22,10 @@ export const itemSchema = z.object({
     customerCode: z.string().min(1, "Код клиента обязателен"),
     customerName: z.string().min(1, "Имя клиента обязательно"),
     productRoutes: z.string().min(1, "Направления обязательно"),
+    shop: z.string(),
+    expense: z.string(),
+    currency: z.string(),
+    note: z.string(),
 });
 
 // Схема валидации для общей информации
@@ -44,6 +48,10 @@ export const validateItem = (item: any): ValidationErrors => {
             customerCode: item.customerCode,
             customerName: item.customerName,
             productRoutes: item.productRoutes,
+            shop: item.shop,
+            expense: item.expense,
+            currency: item.expense,
+            note: item.note,
         };
 
         itemSchema.parse(itemToValidate);

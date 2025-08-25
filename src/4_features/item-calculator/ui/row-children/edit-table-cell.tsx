@@ -7,16 +7,17 @@ interface EditableCellProps {
     onChange: (field: keyof Item, value: string) => void;
     errors?: ValidationErrors;
     type?: string;
+    label?: string;
     step?: string;
 }
 
-export const EditableCell = ({ field, item, onChange, errors, type = "text", step }: EditableCellProps) => (
+export const EditableCell = ({ field, item, onChange, errors, type = "text", step, label }: EditableCellProps) => (
     <Input
         type={type}
         step={step}
+        label={label}
         value={item[field] || ""}
         onChange={e => onChange(field, e.target.value)}
-        className="max-w-[90px] min-w-[60px]"
         errors={errors?.[field]}
         showError={false}
     />

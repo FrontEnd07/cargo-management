@@ -1,12 +1,12 @@
 "use client";
 
-import { DialogModal, SelectAsync } from "6_shared/ui"
-import { Plus } from "lucide-react"
-import { useForm, Controller } from 'react-hook-form'
+import { DialogModal, SelectAsync } from "6_shared/ui";
+import { Plus } from "lucide-react";
+import { useForm, Controller } from 'react-hook-form';
 import { Input, Button } from "6_shared/ui";
 import { warehouseSchema, warehouseTypeSchema } from "2_pages/warehouse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCurrencyLoader } from "2_pages/warehouse"
+import { useCurrencyLoader } from "5_entities/currency";
 import { trpc } from "app/_trpcClient"
 import { handleTRPCError } from "6_shared/lib";
 import { toast } from "6_shared/utils";
@@ -51,7 +51,7 @@ export const Header = () => {
 
     const handlerSubmit = (data: warehouseTypeSchema) => mutation.mutate(data);
     const isPendingCreateWarehouse = mutation.isPending;
-    
+
     return <div>
         <DialogModal title="Добавить склад" icon={Plus}>
             <div className="p-4 grid grid-cols-2 gap-5 max-w-md">

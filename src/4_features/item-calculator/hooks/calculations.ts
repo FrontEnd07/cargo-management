@@ -51,5 +51,9 @@ export const createNewItem = (id: string): Item => ({
     ratio: '',
     customerCode: '',
     customerName: '',
-    productRoutes: ''
+    productRoutes: '',
+    shop: '',
+    expense: '',
+    currency: '',
+    note: '',
 });

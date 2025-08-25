@@ -7,9 +7,10 @@ interface CustomerNameSelectProps {
     onChange: any;
     error?: string;
     index: number;
+    label?: string;
 }
 
-export const CustomerNameSelect = ({ value, code, onChange, error, index }: CustomerNameSelectProps) => {
+export const CustomerNameSelect = ({ value, code, onChange, error, index, label }: CustomerNameSelectProps) => {
     const loadCustomerNames = useCustomerNameLoader();
 
     const loadOptions = async () => {
@@ -27,6 +28,7 @@ export const CustomerNameSelect = ({ value, code, onChange, error, index }: Cust
     return (
         <SelectAsync
             key={`customer-name-${index}-${code || "no-code"}`}
+            label={label}
             value={selectedValue}
             onChange={onChange('customerName')}
             loadOptions={loadOptions}

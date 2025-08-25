@@ -6,15 +6,17 @@ interface CustomerCodeSelectProps {
     onChange: (value: any) => void;
     error?: string;
     index: number;
+    label?: string;
 }
 
-export const CustomerCodeSelect = ({ value, onChange, error, index }: CustomerCodeSelectProps) => {
+export const CustomerCodeSelect = ({ value, onChange, error, index, label }: CustomerCodeSelectProps) => {
     const loadCustomerCodes = useCustomerCodeLoader();
 
     const selectedValue = value ? { value, label: value } : null;
 
     return (
         <SelectAsync
+            label={label}
             key={`customer-code-${index}`}
             value={selectedValue}
             onChange={onChange}

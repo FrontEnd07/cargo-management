@@ -1,4 +1,4 @@
-import { protectedProcedure, router, publicProcedure } from "server/trpc";
+import { protectedProcedure, router } from "server/trpc";
 import { addCustomerSchema } from "2_pages/customer"
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -51,7 +51,7 @@ export const customerRouter = router({
                 });
             }
         }),
-    getCustomerCodes: publicProcedure
+    getCustomerCodes: protectedProcedure
         .input(z.object({
             search: z.string().optional().default("")
         }))

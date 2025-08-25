@@ -14,6 +14,7 @@ export default function RootLayout({
       <head>
         <title>AuthSystem - Система управления карго</title>
         <meta name="description" content="Современная система карго с ролями пользователей" />
+        <link rel="icon" href="/logo.png" />
       </head>
       <body className='h-full dark:bg-gray-900 dark:bg-none dark:text-white bg-[linear-gradient(to_bottom_right,#eff6ff,#c7d2fe)] text-gray-700'>
         <Provider>

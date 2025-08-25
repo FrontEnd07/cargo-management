@@ -6,6 +6,7 @@ import { StatisticsPanel } from '4_features/item-calculator';
 import { ControlButtons } from '4_features/item-calculator';
 import { useItemCalculator } from '4_features/item-calculator';
 import { GeneralInfoBlock } from "./general-info-block.tsx";
+import { Loader2 } from "lucide-react";
 
 export const CreateItems = () => {
     const {
@@ -25,18 +26,9 @@ export const CreateItems = () => {
 
     if (!isClient) {
         return (
-            <div className="max-w-7xl">
-                <div className="mb-6">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                        Калькулятор объема и веса
-                    </h1>
-                    <p className="text-gray-600">
-                        Загрузка...
-                    </p>
-                </div>
-                <div className="animate-pulse">
-                    <div className="h-64 bg-gray-200 rounded-xl"></div>
-                </div>
+            <div className="flex flex-col items-center justify-center">
+                <Loader2 className="animate-spin text-blue-500 mb-2" />
+                <span className="text-gray-500">Загрузка...</span>
             </div>
         );
     }

@@ -12,6 +12,10 @@ export interface Item {
     customerCode: string;
     customerName: string;
     productRoutes: string;
+    expense: string;
+    shop: string;
+    note: string;
+    currency: string;
 }
 
 export interface ValidationErrors {

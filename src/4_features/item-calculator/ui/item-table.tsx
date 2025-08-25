@@ -17,32 +17,19 @@ export const ItemTable: React.FC<ItemTableProps> = ({
     onItemChange,
     onRemoveItem
 }) => {
-    const headerCells = useMemo(() =>
-        TABLE_HEADERS.map((header, key) => (
-            <TableHead key={key} className="!p-1">
-                {header}
-            </TableHead>
-        )), []);
 
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    {headerCells}
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {items.map((item, index) => (
-                    <ItemRow
-                        key={item.id}
-                        item={item}
-                        index={index}
-                        onChange={onItemChange}
-                        onRemove={onRemoveItem}
-                        errors={validationErrors[item.id]}
-                    />
-                ))}
-            </TableBody>
-        </Table>
+        <div className='shadow-md sm:rounded-lg overflow-hidden'>
+            {items.map((item, index) => (
+                <ItemRow
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    onChange={onItemChange}
+                    onRemove={onRemoveItem}
+                    errors={validationErrors[item.id]}
+                />
+            ))}
+        </div>
     );
 };

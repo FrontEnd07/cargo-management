@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from "server/trpc"
+import { protectedProcedure, router } from "server/trpc"
 import { manualSchema } from '5_entities/manual'
 import { TRPCError } from "@trpc/server"
 import { z } from "zod"
@@ -42,7 +42,7 @@ export const productRoutesRouter = router({
             }
         }),
 
-    getProductRoutesAll: publicProcedure
+    getProductRoutesAll: protectedProcedure
         .input(z.object({
             search: z.string().optional()
         }))
@@ -62,7 +62,7 @@ export const productRoutesRouter = router({
             return productRoutes.map(({ id, name, description }) => ({ id, name, description }));
         }),
 
-    getProductRoutes: publicProcedure
+    getProductRoutes: protectedProcedure
         .input(z.object({
             page: z.number().min(1).default(1),
             pageSize: z.number().min(1).max(100).default(10),

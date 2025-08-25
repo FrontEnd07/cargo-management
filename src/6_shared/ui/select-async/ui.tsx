@@ -123,7 +123,8 @@ export const SelectAsync = ({
                     defaultOptions
                     value={value}
                     placeholder={placeholder}
-
+                    menuPortalTarget={isMulti ? undefined : document.body}
+                    
                     // Обработчики
                     loadOptions={debouncedLoad}
                     onChange={handleChange}

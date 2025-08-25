@@ -2,7 +2,9 @@
 
 import React, { memo } from "react";
 import { Item, ValidationErrors } from "5_entities/receive-products";
-import { TableRow, TableCell, Button } from "6_shared/ui";
+import { Button } from "6_shared/ui";
+import { useProductRoutesLoader } from "4_features/item-calculator"
+import { useCurrencyLoader } from "5_entities/currency";
 
 import {
     EditableCell,
@@ -23,63 +25,94 @@ interface ItemRowProps {
 
 export const ItemRow = memo<ItemRowProps>(
     ({ item, index, onChange, onRemove, errors = {} }) => {
-        const { handleInput, handleSelectChange, handleCode, handleProductRoutes } = useItemRowHandlers(
+        const loadProductRoutes = useProductRoutesLoader();
+        const loadCurrency = useCurrencyLoader()
+
+        const { handleInput, handleSelectChange, handleCode, handleProductRoutes, handleCurrency } = useItemRowHandlers(
             index,
             item,
             onChange
         );
 
         return (
-            <TableRow>
-                <TableCell className="!py-3 !px-3">{index + 1}</TableCell>
+            <div className="dark:bg-gray-800 bg-white p-4 pt-7 [&:not(:last-child)]:border-b dark:border-gray-700 border-gray-200">
 
                 {/* Редактируемые поля */}
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="name" item={item} onChange={handleInput} errors={errors} />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="length" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="width" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="height" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="quantity" item={item} onChange={handleInput} errors={errors} type="number" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <EditableCell field="kgPerUnit" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
-                </TableCell>
-
-                {/* Автоматические вычисления */}
-                <TableCell className="!py-1 !px-1">
-                    <ReadOnlyCell value={item.totalVolume} placeholder="Автоматически" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <ReadOnlyCell value={item.totalWeight} placeholder="Автоматически" />
-                </TableCell>
-                <TableCell className="!py-1 !px-1">
-                    <ReadOnlyCell value={item.ratio} placeholder="Автоматически" />
-                </TableCell>
+                <div className="mb-7 border px-4 py-4 border-gray-300 dark:border-gray-600 sm:rounded-lg relative">
+                    <div className="font-semibold text-gray-900 mb-2 dark:text-gray-300 absolute -top-4 bg-white px-3 dark:bg-gray-800">Информация о товаре*</div>
+                    <div className="grid grid-cols-3 gap-3 items-end">
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Длина (см)" field="length" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Ширина (см)" field="width" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Высота (см)" field="height" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Название товара" field="name" item={item} onChange={handleInput} errors={errors} />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Количество" field="quantity" item={item} onChange={handleInput} errors={errors} type="number" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Вес за ед. (кг)" field="kgPerUnit" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 items-end">
+                        <div className="!py-1 !px-1 min-w-[90px]">
+                            <CustomerCodeSelect label="Код клиента" value={item.customerCode} onChange={handleCode} error={errors.customerCode} index={index} />
+                        </div>
+                        <div className="!py-1 !px-1 min-w-[90px]">
+                            <CustomerNameSelect label="Имя клиента" value={item.customerName} code={item.customerCode} onChange={handleSelectChange} error={errors.customerName} index={index} />
+                        </div>
+                        <div className="!py-1 !px-1 min-w-[90px]">
+                            <ProductRoutesSelect keyProps="product-routes" label="Направление" value={item.productRoutes} loadingData={loadProductRoutes} onChange={handleProductRoutes} index={index} error={errors.productRoutes} />
+                        </div>
+                    </div>
+                </div>
 
                 {/* Селекты */}
-                <TableCell className="!py-1 !px-1 min-w-[90px]">
-                    <CustomerCodeSelect value={item.customerCode} onChange={handleCode} error={errors.customerCode} index={index} />
-                </TableCell>
-                <TableCell className="!py-1 !px-1 min-w-[90px]">
-                    <CustomerNameSelect value={item.customerName} code={item.customerCode} onChange={handleSelectChange} error={errors.customerName} index={index} />
-                </TableCell>
-                <TableCell className="!py-1 !px-1 min-w-[90px]">
-                    <ProductRoutesSelect value={item.productRoutes} onChange={handleProductRoutes} index={index} error={errors.productRoutes} />
-                </TableCell>
 
+
+                {/* Автоматические вычисления */}
+                <div className="mb-7 border px-4 py-4 border-gray-300 dark:border-gray-600 relative sm:rounded-lg">
+                    <div className="font-semibold text-gray-900 mb-2 dark:text-gray-300 absolute -top-4 bg-white px-3 dark:bg-gray-800">Общая статистика</div>
+                    <div className="grid grid-cols-3 gap-3 items-end">
+                        <div className="!py-1 !px-1">
+                            <ReadOnlyCell label="Общий объем (м³)" value={item.totalVolume} placeholder="Автоматически" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <ReadOnlyCell label="Общий вес (кг)" value={item.totalWeight} placeholder="Автоматически" />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <ReadOnlyCell label="Соотношение" value={item.ratio} placeholder="Автоматически" />
+                        </div>
+                    </div>
+                </div>
+                <div className="mb-4 border px-4 py-4 border-gray-300 dark:border-gray-600 relative sm:rounded-lg">
+                    <div className="font-semibold text-gray-900 mb-2 dark:text-gray-300 absolute -top-4 bg-white px-3 dark:bg-gray-800">Дополнительные данные</div>
+                    <div className="grid grid-cols-3 gap-3 items-end">
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Сумма расхода" field="expense" item={item} onChange={handleInput} errors={errors} type="number" step="0.01" />
+                        </div>
+                        <div className="!py-1 !px-1 min-w-[90px]">
+                            <ProductRoutesSelect keyProps="currency" loadingData={loadCurrency} label="Валюта" value={item.currency} onChange={handleCurrency} index={index} />
+                        </div>
+                        <div className="!py-1 !px-1">
+                            <EditableCell label="Магазин" field="shop" item={item} onChange={handleInput} errors={errors} />
+                        </div>
+                        <div className="!py-1 !px-1 col-span-full">
+                            <EditableCell label="Примечание" field="note" item={item} onChange={handleInput} errors={errors} />
+                        </div>
+                    </div>
+                </div>
                 {/* Удаление */}
-                <TableCell className="!py-1 !px-1">
+                <div className="!py-1 !px-1">
                     <Button variant="danger" onClick={() => onRemove(index)}>Удалить</Button>
-                </TableCell>
-            </TableRow>
+                </div>
+            </div >
         );
     }
 );
