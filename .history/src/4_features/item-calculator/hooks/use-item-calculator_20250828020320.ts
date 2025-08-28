@@ -1,0 +1,118 @@
+"use client"
+
+import { useCallback, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useItems } from "./use-items";
+import { useGeneralInfo } from "./use-general-info";
+import { useTotalStats } from "./use-total-stats";
+import { trpc } from 'app/_trpcClient';
+import { handleTRPCError } from "6_shared/lib";
+
+export const useItemCalculator = () => {
+    const [isClient, setIsClient] = useState(false);
+
+    const {
+        mutate: createItems,
+        isPending: isPendingCreateItem
+    } = trpc.items.createItems.useMutation({
+        onSuccess: (data) => {
+            toast.success("Товары успешно созданы");
+            handleClearAll();
+        },
+        onError: (error) => {
+            handleTRPCError(error);
+            toast.error("Ошибка при создании товаров");
+        }
+    });
+
+    const {
+        items, validationErrors,
+        handleItemChange, handleAddItem, handleRemoveItem,
+        clearItems, validateAllItems
+    } = useItems();
+
+    const {
+        generalInfo, generalInfoErrors,
+        handleGeneralInfoChange, clearGeneralInfo, validateGeneralInfoData
+    } = useGeneralInfo();
+
+    const totalStats = useTotalStats(items);
+
+    useEffect(() => setIsClient(true), []);
+
+    const handleClearAll = useCallback(() => {
+        clearItems();
+        clearGeneralInfo();
+    }, [clearItems, clearGeneralInfo]);
+
+    const handleSubmit = useCallback(() => {
+        const isGeneralInfoValid = validateGeneralInfoData();
+        const areItemsValid = validateAllItems();
+
+        if (!isGeneralInfoValid || !areItemsValid) {
+            toast.error("Исправьте ошибки перед отправкой");
+            return;
+        }
+        console.log("items", items);
+        // Формируем данные в соответствии с itemsSchema
+        const submitData = {
+            generalInfo: {
+                employeeId: generalInfo.employeeId,
+                warehouseId: generalInfo.warehouseId,
+                date: generalInfo.date,
+                customerId: generalInfo.customerId || undefined // делаем optional
+            },
+            items: items.map(item => ({
+                name: item.name,
+                length: item.length,
+                width: item.width,
+                height: item.height,
+                quantity: item.quantity,
+                kgPerUnit: item.kgPerUnit,
+                totalVolume: item.totalVolume,
+                totalWeight: item.totalWeight,
+                ratio: item.ratio,
+                customerCode: item.customerCode,
+                customerName: item.customerName,
+                productRoutes: item.productRoutes,
+                shop: item.shop || "",
+                expense: item.expense || "",
+                currency: item.currency || "",
+                note: item.note || ""
+            })),
+            totalStats: {
+                totalVolume: totalStats.totalVolume,
+                totalWeight: totalStats.totalWeight,
+                avgRation: totalStats.avgRatio
+            }
+        };
+
+        if (!isPendingCreateItem) {
+            createItems(submitData);
+        }
+    }, [
+        generalInfo,
+        items,
+        totalStats,
+        validateGeneralInfoData,
+        validateAllItems,
+        createItems,
+        isPendingCreateItem
+    ]);
+
+    return {
+        isClient,
+        items,
+        isPendingCreateItem,
+        validationErrors,
+        totalStats,
+        generalInfo,
+        generalInfoErrors,
+        handleItemChange,
+        handleAddItem,
+        handleRemoveItem,
+        handleClearAll,
+        handleSubmit,
+        handleGeneralInfoChange
+    };
+};
